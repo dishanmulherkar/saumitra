@@ -116,7 +116,7 @@ switch($page)
         }
         break;   
 
-     case 'sales_report':
+     case 'sales_report_bill':
         include 'controller/SalesReportController.php';
         $controller = new SalesReportController($con);
         if (method_exists($controller, $action)) {
@@ -126,7 +126,7 @@ switch($page)
         }
         break;   
 
-    case 'purchase_report':
+    case 'purchase_report_bill':
         include 'controller/PurchaseReportController.php';
         $controller = new PurchaseReportController($con);
         if (method_exists($controller, $action)) {
