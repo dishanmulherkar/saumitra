@@ -412,7 +412,6 @@ let editingRow = null;
             let exists = false;
 
             $('.purchase-table tbody tr').not('.entry-row').each(function(){
-
                 let oldProduct = $(this).find('input[name="product_id[]"]').val();
 
                 if(oldProduct == product)
@@ -420,7 +419,6 @@ let editingRow = null;
                     exists = true;
                     return false;
                 }
-
             });
 
             if(exists)
@@ -464,7 +462,7 @@ let editingRow = null;
             editingRow.replaceWith(html);
             editing = false;
             editingRow = null;
-               row.find('.product').prop('disabled', true).trigger('change.select2');
+            //    row.find('.product').prop('disabled', true).trigger('change.select2');
             $('#cancelEdit').hide();
         }
         else
@@ -495,6 +493,7 @@ let editingRow = null;
 
         if (editing) {
             alert("Please Save or Cancel the current edit first.");
+            
             return;
         }
 
