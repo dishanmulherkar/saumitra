@@ -493,7 +493,7 @@ let editingRow = null;
 
         if (editing) {
             alert("Please Save or Cancel the current edit first.");
-            
+
             return;
         }
 
