@@ -10,16 +10,20 @@ class PurchaseReportModel
         $this->con = $con;
     }
 
-        public function getReport($start_date = '', $end_date = '')
+    public function getReport($start_date = '', $end_date = '', $supplier_id = '')
     {
-        $where = "";
+        $where = " WHERE 1=1 ";
 
-        if (!empty($start_date) && !empty($end_date))
-        {
-            $where = " WHERE p.purchase_date BETWEEN '$start_date' AND '$end_date' ";
+        if (!empty($start_date) && !empty($end_date)) {
+            $where .= " AND p.purchase_date BETWEEN '$start_date' AND '$end_date'";
         }
 
-        return mysqli_query($this->con,"
+        // Supplier filter
+        if (!empty($supplier_id)) {
+            $where .= " AND pa.party_id = '$supplier_id'";
+        }
+
+        return mysqli_query($this->con, "
             SELECT
                 p.purchase_id,
                 p.batch_no,
@@ -30,10 +34,21 @@ class PurchaseReportModel
             FROM purchase_entry p
             LEFT JOIN parties pa
                 ON pa.party_id = p.supplier_id
-                $where
+            $where
             ORDER BY p.purchase_date DESC, p.purchase_id DESC
         ");
     }
+
+     public function getSupplier()
+    {
+        $sql = "SELECT party_id, party_name
+                FROM parties
+                WHERE party_type = 'Supplier'
+                ORDER BY party_name ASC";
+
+        return mysqli_query($this->con, $sql);
+    }
+
 
    public function getPurDetails($purchase_id)
     {

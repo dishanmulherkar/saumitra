@@ -15,8 +15,9 @@ class SalesReportController
     {
           $start_date = $_GET['start_date'] ?? '';
         $end_date   = $_GET['end_date'] ?? '';
-
-        $sales = $this->model->getSalesReport($start_date, $end_date);
+        $customer_id = $_GET['customer_id'] ?? '';
+        $customers = $this->model->getCustomers();
+        $sales = $this->model->getSalesReport($start_date, $end_date, $customer_id);
 
         include 'view/report/SalesReport.php';
     }

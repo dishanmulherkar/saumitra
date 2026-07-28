@@ -10,30 +10,42 @@ class SalesReportModel
         $this->con = $con;
     }
 
-      public function getSalesReport($start_date = '', $end_date = '')
+    public function getCustomers()
     {
+        $sql = "SELECT party_id, party_name
+                FROM parties
+                WHERE party_type = 'Customer'
+                ORDER BY party_name ASC";
 
-        $where = "";
-
-        if(!empty($start_date) && !empty($end_date))
-        {
-            $where = " WHERE s.sale_date BETWEEN '$start_date' AND '$end_date' ";
-        }
-
-        return mysqli_query($this->con,"
-            SELECT
-                s.s_id,
-                s.invoice_no,
-                s.sale_date,
-                p.party_name,
-                s.total_amt
-            FROM sales_entries s
-            LEFT JOIN parties p
-                ON p.party_id = s.c_id
-                  $where
-            ORDER BY s.sale_date DESC
-        ");
+        return mysqli_query($this->con, $sql);
     }
+
+      public function getSalesReport($start_date = '', $end_date = '', $customer_id = '')
+        {
+            $where = " WHERE 1=1 ";
+
+            if (!empty($start_date) && !empty($end_date)) {
+                $where .= " AND s.sale_date BETWEEN '$start_date' AND '$end_date'";
+            }
+
+            // Apply customer filter only if a customer is selected
+            if (!empty($customer_id)) {
+                $where .= " AND s.c_id = '$customer_id'";
+            }
+
+            return mysqli_query($this->con, "
+                SELECT
+                    s.s_id,
+                    s.invoice_no,
+                    s.sale_date,
+                    p.party_name,
+                    s.total_amt
+                FROM sales_entries s
+                LEFT JOIN parties p ON p.party_id = s.c_id
+                $where
+                ORDER BY s.sale_date DESC
+            ");
+        }
 
     public function getSaleDetails($sale_id)
     {

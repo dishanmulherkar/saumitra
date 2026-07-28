@@ -13,10 +13,11 @@ class PurchaseReportController
 
     public function index()
     {
-          $start_date = $_GET['start_date'] ?? '';
+        $start_date = $_GET['start_date'] ?? '';
         $end_date   = $_GET['end_date'] ?? '';
-
-        $sales = $this->model->getReport($start_date, $end_date);
+        $supplier_id = $_GET['supplier_id'] ?? '';
+        $suppliers = $this->model->getSupplier();
+        $sales = $this->model->getReport($start_date, $end_date,$supplier_id);
 
         include 'view/report/PurchaseReport.php';
     }

@@ -36,7 +36,7 @@
             <h4>Sales Report</h4>
         </div>
 
-          <form method="GET" action="<?= BASE_URL ?>sales_report">
+          <form method="GET" action="<?= BASE_URL ?>sales_report_bill">
 
     <div>
         <div class="row ml-3 mb-3">
@@ -57,6 +57,20 @@
                     name="end_date"
                     class="form-control"
                     value="<?= $_GET['end_date'] ?? '' ?>">
+            </div>
+
+             <div class="col-md-3">
+                <label class="form-label" style= "margin-bottom: 0px;">Customer</label>
+                <select name="customer_id" id="customer_id" class="form-select">
+                    <option value="">All Customers</option>
+
+                    <?php while($customer = mysqli_fetch_assoc($customers)) { ?>
+                        <option value="<?= $customer['party_id']; ?>"
+                            <?= ($customer_id == $customer['party_id']) ? 'selected' : ''; ?>>
+                            <?= $customer['party_name']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="col-md-2 mt-4">
@@ -168,7 +182,14 @@
 <?php include 'view/layout/footer.php'; ?>
 
 <script>
-$('#reportTable').DataTable();
+$('#reportTable').DataTable({
+    pageLength: 25,
+    lengthMenu: [
+        [25, 50, 100],
+        ['25', '50', '100']
+    ],
+    responsive: true
+});
 
 $(document).on('click', '.sale-details', function () {
 
@@ -180,7 +201,7 @@ $(document).on('click', '.sale-details', function () {
     );
 
     $.ajax({
-        url: "<?= BASE_URL ?>sales_report/getSaleDetails",
+        url: "<?= BASE_URL ?>sales_report_bill/getSaleDetails",
         type: "POST",
         data: { sale_id: sale_id },
         success: function(res) {

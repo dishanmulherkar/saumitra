@@ -53,6 +53,20 @@
                             value="<?= $_GET['end_date'] ?? '' ?>">
                     </div>
 
+                     <div class="col-md-3">
+                        <label class="form-label" style= "margin-bottom: 0px;">Supplier</label>
+                        <select name="supplier_id" id="supplier_id" class="form-select">
+                            <option value="">All Supplier</option>
+
+                            <?php while($supplier = mysqli_fetch_assoc($suppliers)) { ?>
+                                <option value="<?= $supplier['party_id']; ?>"
+                                    <?= ($supplier_id == $supplier['party_id']) ? 'selected' : ''; ?>>
+                                    <?= $supplier['party_name']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
                     <div class="col-md-2 mt-4">
                         <button class="btn btn-primary">
                             Filter
@@ -147,7 +161,14 @@
 <?php include 'view/layout/footer.php'; ?>
 
 <script>
-$('#reportTable').DataTable();
+$('#reportTable').DataTable({
+    pageLength: 25,
+    lengthMenu: [
+        [25, 50, 100],
+        ['25', '50', '100']
+    ],
+    responsive: true
+});
 
 $(document).on('click','.sale-details',function(){
 
@@ -161,7 +182,7 @@ $(document).on('click','.sale-details',function(){
 
 
     $.ajax({
-        url : "<?= BASE_URL ?>purchase_report/getPurDetails",
+        url : "<?= BASE_URL ?>purchase_report_bill/getPurDetails",
         type : "POST",
         data : {sale_id:sale_id},
         success:function(res)
