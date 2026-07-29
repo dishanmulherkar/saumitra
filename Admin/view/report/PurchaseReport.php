@@ -30,9 +30,9 @@
 <div class="container-fluid mt-3">
     <div class="card">
         <div class="card-header bg-black text-white">
-            <h4>Purchase Report</h4>
+            <h4>Purchase Report Bill Wise</h4>
         </div>
-          <form method="GET" action="<?= BASE_URL ?>purchase_report">
+          <form method="GET" action="<?= BASE_URL ?>purchase_report_bill">
             <div>
                 <div class="row ml-3 mb-3">
                     <div class="col-md-3">

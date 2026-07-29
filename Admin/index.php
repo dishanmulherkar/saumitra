@@ -156,19 +156,35 @@ switch($page)
         }
         break;   
 
-
-    case 'dashboard':
-    default:
-        // Fixed folder name from 'controllers' to 'controller'
-        include 'controller/DashboardController.php'; 
-        
-        // Passing $con so your dashboard can fetch database stats
-        $controller = new DashboardController($con); 
-        
+      case 'salesreportprodwise':
+        include 'controller/SalesReportProdWise_ctl.php';
+        $controller = new SalesReportProdWise_ctl($con);
         if (method_exists($controller, $action)) {
             $controller->$action($id);
         } else {
             $controller->index();
         }
-        break;
+        break;   
+
+        case 'purchase_report':
+            include 'controller/PurchaseReportController.php';
+            $controller = new PurchaseReportController($con);
+            $controller->Purchase_combine();
+            break; 
+
+
+    case 'dashboard':
+        default:
+            // Fixed folder name from 'controllers' to 'controller'
+            include 'controller/DashboardController.php'; 
+            
+            // Passing $con so your dashboard can fetch database stats
+            $controller = new DashboardController($con); 
+            
+            if (method_exists($controller, $action)) {
+                $controller->$action($id);
+            } else {
+                $controller->index();
+            }
+            break;
 }

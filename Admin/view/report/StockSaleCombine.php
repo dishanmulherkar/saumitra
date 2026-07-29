@@ -42,6 +42,7 @@
                 <input
                     type="date"
                     name="start_date"
+                    id = "start_date"
                     class="form-control"
                     value="<?= $_GET['start_date'] ?? '' ?>">
             </div>
@@ -51,6 +52,7 @@
                 <input
                     type="date"
                     name="end_date"
+                    id = "end_date"
                     class="form-control"
                     value="<?= $_GET['end_date'] ?? '' ?>">
             </div>
@@ -71,46 +73,25 @@
         <table class="table table-bordered table-striped" id="reportTable">
 
             <thead class="table-dark">
-
                 <tr>
-
                     <th>#</th>
-
                     <th>Product Name</th>
-                    
                     <th class="text-end">Opening Qty</th>
                     <th class="text-end">Purchase Qty</th>
-
-                    <!-- <th class="text-end">Purchase Rate</th> -->
-
                     <th class="text-end">Purchase Amount</th>
-
                     <th class="text-end">Sales Qty</th>
-
-                    <!-- <th class="text-end">Sales Rate</th> -->
-
                     <th class="text-end">Sales Amount</th>
-
                     <th class="text-end">Closing Qty</th>
-
                     <th class="text-end">Closing Amount</th>
-
                 </tr>
-
             </thead>
-
             <tbody>
-
             <?php
-
             $i = 1;
-
             $totalPurchaseQty = 0;
             $totalPurchaseAmount = 0;
-
             $totalSalesQty = 0;
             $totalSalesAmount = 0;
-
             $totalClosingQty = 0;
             $totalClosingAmount = 0;
 
@@ -133,22 +114,14 @@
                     <td><?= $i++; ?></td>
 
                     <td><?= $row['product_name']; ?></td>
-
-
-                     <td class="text-end"><?= $row['opening_qty']; ?></td>
+                    <td class="text-end"><?= $row['opening_qty']; ?></td>
                     <td class="text-end"><?= $row['purchase_qty']; ?></td>
-
-                    <!-- <td class="text-end">
-                        ₹ <?= number_format($row['purchase_rate'],2); ?>
-                    </td> -->
 
                     <td class="text-end">
                         ₹ <?= number_format($row['purchase_amount'],2); ?>
                     </td>
 
                     <td class="text-end"><?= $row['sales_qty']; ?></td>
-
-                    <!-- <td class="text-end"><?= $row['sales_rate']; ?></td> -->
 
                     <td class="text-end">
                         ₹ <?= number_format($row['sales_amount'],2); ?>
@@ -159,7 +132,6 @@
                     <td class="text-end">
                         ₹ <?= number_format($row['closing_amount'],2); ?>
                     </td>
-
                 </tr>
 
             <?php } ?>
@@ -219,10 +191,10 @@
 <script>
 $(document).ready(function () {
 
+var startDate = $('#start_date').val();
+var endDate = $('#end_date').val();
     var table = $('#reportTable').DataTable({
-
-        pageLength: 10,
-
+        pageLength: 25,
         dom: '<"row"<"col-md-6"l><"col-md-6 text-end"f>>' +
              'rt' +
              '<"row mt-3"<"col-md-6"B><"col-md-6 text-end"ip>>',
@@ -234,6 +206,8 @@ $(document).ready(function () {
                 className: 'btn btn-success btn-sm',
                 footer: true,
                 title: 'Stock & Sales Report',
+                 filename: 'StockSales_Report_' + startDate + '_to_' + endDate,
+                messageTop: 'Period: ' + startDate + ' to ' + endDate,
                 exportOptions: {
                     columns: ':visible'
                 }

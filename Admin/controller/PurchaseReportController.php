@@ -59,4 +59,15 @@ class PurchaseReportController
 
 
     }
+
+     public function Purchase_combine()
+    {
+        $start_date = !empty($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
+        $end_date = !empty($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
+       $supplier_id = $_GET['supplier_id'] ?? '';
+        $suppliers = $this->model->getSupplier();
+        $purchase = $this->model->getPurchaseCombineReport($start_date, $end_date,$supplier_id);
+        include 'view/report/PurchaseReportProdWise.php';
+    }
+
 }

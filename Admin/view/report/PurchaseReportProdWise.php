@@ -21,12 +21,6 @@
     --bs-btn-color: #ffffff;
     --bs-btn-bg: #0d6efd;
 }
-
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-    bs-gutter-x: 0;
-    bs-gutter-y: 0;
-}
-
 </style>
 
 
@@ -35,10 +29,10 @@
     <div class="card">
 
         <div class="card-header bg-black text-white">
-            <h4>Stock And Sales Report</h4>
+            <h4>Purchase Report</h4>
         </div>
 
-          <form method="GET" action="<?= BASE_URL ?>stock_report">
+          <form method="GET" action="<?= BASE_URL ?>purchase_report">
 
     <div>
         <div class="row ml-3 mb-3">
@@ -63,6 +57,20 @@
                     value="<?= $_GET['end_date'] ?? '' ?>">
             </div>
 
+            <div class="col-md-3">
+                <label class="form-label" style= "margin-bottom: 0px;">Supplier</label>
+                <select name="supplier_id" id="supplier_id" class="form-select">
+                    <option value="">All Supplier</option>
+
+                    <?php while($supplier = mysqli_fetch_assoc($suppliers)) { ?>
+                        <option value="<?= $supplier['party_id']; ?>"
+                            <?= ($supplier_id == $supplier['party_id']) ? 'selected' : ''; ?>>
+                            <?= $supplier['party_name']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+
             <div class="col-md-2 mt-4">
                 <button class="btn btn-primary">
                     Filter
@@ -79,32 +87,12 @@
         <table class="table table-bordered table-striped" id="reportTable">
 
             <thead class="table-dark">
-
                 <tr>
-
                     <th>#</th>
-
                     <th>Product Name</th>
-                    <th>Batch No</th>
-                    <th class="text-end">Opening Qty</th>
                     <th class="text-end">Purchase Qty</th>
-
-                    <th class="text-end">Purchase Rate</th>
-
                     <th class="text-end">Purchase Amount</th>
-
-                    <th class="text-end">Sales Qty</th>
-
-                    <th class="text-end">Sales Rate</th>
-
-                    <th class="text-end">Sales Amount</th>
-
-                    <th class="text-end">Closing Qty</th>
-
-                    <th class="text-end">Closing Amount</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
@@ -116,24 +104,11 @@
             $totalPurchaseQty = 0;
             $totalPurchaseAmount = 0;
 
-            $totalSalesQty = 0;
-            $totalSalesAmount = 0;
-
-            $totalClosingQty = 0;
-            $totalClosingAmount = 0;
-
-            while($row = mysqli_fetch_assoc($sales))
+            while($row = mysqli_fetch_assoc($purchase))
             {
 
                 $totalPurchaseQty += $row['purchase_qty'];
                 $totalPurchaseAmount += $row['purchase_amount'];
-
-                $totalSalesQty += $row['sales_qty'];
-                $totalSalesAmount += $row['sales_amount'];
-
-                $totalClosingQty += $row['closing_qty'];
-                $totalClosingAmount += $row['closing_amount'];
-
             ?>
 
                 <tr>
@@ -141,32 +116,14 @@
                     <td><?= $i++; ?></td>
 
                     <td><?= $row['product_name']; ?></td>
-
-                    <td><?= $row['batch_no']; ?></td>
-
-                     <td class="text-end"><?= $row['opening_qty']; ?></td>
                     <td class="text-end"><?= $row['purchase_qty']; ?></td>
 
-                    <td class="text-end">
+                    <!-- <td class="text-end">
                         ₹ <?= number_format($row['purchase_rate'],2); ?>
-                    </td>
+                    </td> -->
 
                     <td class="text-end">
                         ₹ <?= number_format($row['purchase_amount'],2); ?>
-                    </td>
-
-                    <td class="text-end"><?= $row['sales_qty']; ?></td>
-
-                    <td class="text-end"><?= $row['sales_rate']; ?></td>
-
-                    <td class="text-end">
-                        ₹ <?= number_format($row['sales_amount'],2); ?>
-                    </td>
-
-                    <td class="text-end"><?= $row['closing_qty']; ?></td>
-
-                    <td class="text-end">
-                        ₹ <?= number_format($row['closing_amount'],2); ?>
                     </td>
 
                 </tr>
@@ -179,34 +136,17 @@
 
                 <tr>
 
-                    <th colspan="4" class="text-end">
+                    <th colspan="2" class="text-end">
                         Grand Total
                     </th>
 
                     <th class="text-end">
                         <?= number_format($totalPurchaseQty,2); ?>
                     </th>
-                    <th></th>
+                    
                     <th class="text-end">
                         ₹ <?= number_format($totalPurchaseAmount,2); ?>
                     </th>
-
-                    <th class="text-end">
-                        <?= number_format($totalSalesQty,2); ?>
-                    </th>
-                    <th></th>
-                    <th class="text-end">
-                        ₹ <?= number_format($totalSalesAmount,2); ?>
-                    </th>
-
-                    <th class="text-end">
-                        <?= number_format($totalClosingQty,2); ?>
-                    </th>
-
-                    <th class="text-end">
-                        ₹ <?= number_format($totalClosingAmount,2); ?>
-                    </th>
-
                 </tr>
 
             </tfoot>
@@ -233,7 +173,7 @@ var endDate = $('#end_date').val();
 
     var table = $('#reportTable').DataTable({
 
-         pageLength: 25,
+       pageLength: 25,
         lengthMenu: [[25, 50, 100], [25, 50, 100]],
 
         dom: '<"row"<"col-md-6"l><"col-md-6 text-end"f>>' +
@@ -246,8 +186,8 @@ var endDate = $('#end_date').val();
                 text: '<i class="fa fa-file-excel"></i> Excel',
                 className: 'btn btn-success btn-sm',
                 footer: true,
-                title: 'Stock & Sales Report',
-                filename: 'StockSales_Report_' + startDate + '_to_' + endDate,
+                title: 'Purchase Report',
+                filename: 'Purchase_Report_' + startDate + '_to_' + endDate,
                 messageTop: 'Period: ' + startDate + ' to ' + endDate,
                 exportOptions: {
                     columns: ':visible'

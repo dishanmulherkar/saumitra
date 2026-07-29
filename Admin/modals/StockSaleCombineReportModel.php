@@ -223,19 +223,4 @@ class StockSaleCombineReportModel
 
     ");
 }
-    public function getSaleDetails($sale_id)
-    {
-        $sale_id = (int)$sale_id;
-
-        return mysqli_query($this->con,"
-            SELECT
-                d.*,
-                p.product_name
-            FROM `sales_details` d
-            INNER JOIN products p
-                ON p.p_id = d.p_id
-            WHERE d.s_id = '$sale_id'
-            ORDER BY d.sale_detail_id ASC
-        ");
-    }
 }

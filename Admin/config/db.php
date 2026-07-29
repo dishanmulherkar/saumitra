@@ -4,8 +4,7 @@ $con = mysqli_connect(
     "localhost",
     "root",
     "",
-    "saumi",
-    3307
+    "saumi"
 );
 
 if(!$con){

@@ -44,7 +44,9 @@ $isInventoryOpen = in_array($currentPage, $inventoryPages);
 
 $reportPages = [
     'sales_report_bill',
+    'salesreportprodwise',
     'purchase_report_bill',
+    'purchase_report',
     'stock_report',
     'stock_report_combine'
 ];
@@ -153,10 +155,26 @@ $isReportOpen = in_array($currentPage, $reportPages);
                                  </li>
 
                                  <li class="nav-item">
+                                    <a href="<?= BASE_URL ?>salesreportprodwise"
+                                       class="nav-link text-light report-link <?= $currentPage == 'salesreportprodwise' ? 'active' : ''; ?>">
+                                       <i class="fa-solid fa-file-invoice-dollar"></i>&nbsp;&nbsp;
+                                       Sales Report
+                                    </a>
+                                 </li>
+
+                                 <li class="nav-item">
                                     <a href="<?= BASE_URL ?>purchase_report_bill"
                                        class="nav-link text-light report-link <?= $currentPage == 'purchase_report_bill' ? 'active' : ''; ?>">
                                        <i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;
                                        Purchase Report Bill Wise
+                                    </a>
+                                 </li>
+
+                                 <li class="nav-item">
+                                    <a href="<?= BASE_URL ?>purchase_report"
+                                       class="nav-link text-light report-link <?= $currentPage == 'purchase_report' ? 'active' : ''; ?>">
+                                       <i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;
+                                       Purchase Report 
                                     </a>
                                  </li>
 
