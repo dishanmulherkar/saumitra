@@ -119,6 +119,8 @@
 
                     <td class="text-end">
                         ₹ <?= number_format($row['purchase_amount'],2); ?>
+
+                        
                     </td>
 
                     <td class="text-end"><?= $row['sales_qty']; ?></td>
